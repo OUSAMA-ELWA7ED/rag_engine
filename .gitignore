@@ -7,3 +7,8 @@ logs/
 .env
 __pycache__/
 *.pyc
+
+# Model weights
+*.pt
+*.pth
+*.ckpt

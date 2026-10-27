@@ -17,5 +17,19 @@ services:
       timeout: 5s
       retries: 5
 
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file: .env
+    environment:
+      RAG_DB_DSN: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-rag_db}
+      RAG_STORE_PROVIDER: postgres_store
+    volumes:
+      - ./model_package:/models:ro   # weights + pipeline_config.json live here, not in the image
+    depends_on:
+      postgres:
+        condition: service_healthy
+
 volumes:
   pgdata:
